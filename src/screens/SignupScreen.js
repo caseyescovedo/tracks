@@ -1,40 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
-import Spacer from '../components/Spacer';
+import { Context as AuthContext } from '../context/AuthContext';
+import { NavigationEvents } from 'react-navigation';
+import AuthForm from '../components/AuthForm';
+import NavLink from '../components/NavLink';
 
 const SignupScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
-      <Spacer>
-        <Text h3>Sign Up For Tracker</Text>
-      </Spacer>
-      <Spacer>
-        <Input
-          label="Email"
-          value={email}
-          onChange={setEmail}
-          autoCapitalize="none"
-          autoCorrect={false}
+    <>
+      <View style={styles.container}>
+        <NavigationEvents onWillFocus={clearErrorMessage} />
+        <AuthForm
+          headerText="Sign Up for Tracker"
+          errorMessage={state.errorMessage}
+          submitButtonText="Sign Up"
+          onSubmit={signup}
         />
-      </Spacer>
-      <Spacer>
-        <Input
-          label="Password"
-          value={password}
-          onChange={setPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-          secureTextEntry
-        />
-      </Spacer>
-      <Spacer>
-        <Button title="Signup" />
-      </Spacer>
-    </View>
+        <NavLink routeName="Signin" text="Sign in instead." />
+      </View>
+    </>
   );
 };
 
